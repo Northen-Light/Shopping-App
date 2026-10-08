@@ -10,8 +10,8 @@ import {
   Modal,
   ActivityIndicator,
 } from 'react-native';
-import { useShoppingStore } from './ShoppingStoreProvider';
-import { onShoppingStoreResetAction } from './shoppingStoreMiddleware';
+import { useShoppingStore } from '../ContextProviders/ShoppingStoreProvider';
+import { onShoppingStoreResetAction } from '../middlewares/shoppingStoreMiddleware';
 
 export default function Payment() {
   const navigation = useNavigation();

@@ -1,5 +1,5 @@
-import { storage } from './asyncStorage';
-import { AUTH_KEY } from './constants';
+import { storage } from '../asyncStorage';
+import { AUTH_KEY } from '../constants';
 
 export const onLoginAction = dispatch => {
   const onLoginCallback = auth =>

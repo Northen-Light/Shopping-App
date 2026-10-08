@@ -8,14 +8,14 @@ import {
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LandingPage from './src/LandingPage';
-import ListingPage from './src/ListingPage';
-import PaymentPage from './src/PaymentPage';
-import { AuthProvider } from './src/AuthProvider';
-import { ShoppingStoreProvider } from './src/ShoppingStoreProvider';
+import LandingPage from './Pages/LandingPage';
+import ListingPage from './Pages/ListingPage';
+import PaymentPage from './Pages/PaymentPage';
+import { AuthProvider } from './ContextProviders/AuthProvider';
+import { ShoppingStoreProvider } from './ContextProviders/ShoppingStoreProvider';
 import { useEffect, useState } from 'react';
-import { storage } from './src/asyncStorage';
-import { NAVIGATION_STATE_KEY } from './src/constants';
+import { storage } from './asyncStorage';
+import { NAVIGATION_STATE_KEY } from './constants';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';

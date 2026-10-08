@@ -8,13 +8,13 @@ import {
   TouchableOpacity,
   Button,
 } from 'react-native';
-import { useAuth } from './AuthProvider';
-import { onLoginAction } from './authMiddleware';
+import { useAuth } from '../ContextProviders/AuthProvider';
+import { onLoginAction } from '../middlewares/authMiddleware';
 import {
   onShoppingStoreIncrementAction,
   onShoppingStoreDecrementAction,
-} from './shoppingStoreMiddleware';
-import { useShoppingStore } from './ShoppingStoreProvider';
+} from '../middlewares/shoppingStoreMiddleware';
+import { useShoppingStore } from '../ContextProviders/ShoppingStoreProvider';
 
 const Item = memo(({ itemName, itemPrice, itemQuantity, index, dispatch }) => {
   const { auth } = useAuth();

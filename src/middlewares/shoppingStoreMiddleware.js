@@ -1,5 +1,5 @@
-import { storage } from './asyncStorage';
-import { SHOPPING_STORE_KEY } from './constants';
+import { storage } from '../asyncStorage';
+import { SHOPPING_STORE_KEY } from '../constants';
 
 export const onShoppingStoreIncrementAction = (dispatch, index) => {
   const onIncrementCallback = shoppingStore =>

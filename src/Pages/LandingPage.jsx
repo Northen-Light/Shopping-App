@@ -1,9 +1,9 @@
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useAuth } from './AuthProvider';
-import { onLoginAction, onLogoutAction } from './authMiddleware';
-import { onShoppingStoreResetAction } from './shoppingStoreMiddleware';
-import { useShoppingStore } from './ShoppingStoreProvider';
+import { useAuth } from '../ContextProviders/AuthProvider';
+import { onLoginAction, onLogoutAction } from '../middlewares/authMiddleware';
+import { onShoppingStoreResetAction } from '../middlewares/shoppingStoreMiddleware';
+import { useShoppingStore } from '../ContextProviders/ShoppingStoreProvider';
 
 export default function LandingPage() {
   const navigation = useNavigation();

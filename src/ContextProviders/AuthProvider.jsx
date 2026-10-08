@@ -1,8 +1,8 @@
 import { useEffect, useReducer } from 'react';
-import { createSafeContext } from './context';
-import { storage } from './asyncStorage';
-import { onRestoreStateFromStorageAction } from './authMiddleware';
-import { AUTH_KEY } from './constants';
+import { createSafeContext } from '../context';
+import { storage } from '../asyncStorage';
+import { onRestoreStateFromStorageAction } from '../middlewares/authMiddleware';
+import { AUTH_KEY } from '../constants';
 
 const [AuthContext, useAuth] = createSafeContext();
 

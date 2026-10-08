@@ -1,8 +1,8 @@
 import { useEffect, useReducer } from 'react';
-import { createSafeContext } from './context';
-import { onShoppingStoreRestoreAction } from './shoppingStoreMiddleware';
-import { storage } from './asyncStorage';
-import { SHOPPING_STORE_KEY } from './constants';
+import { createSafeContext } from '../context';
+import { onShoppingStoreRestoreAction } from '../middlewares/shoppingStoreMiddleware';
+import { storage } from '../asyncStorage';
+import { SHOPPING_STORE_KEY } from '../constants';
 
 const [ShoppingStoreContext, useShoppingStore] =
   createSafeContext('shoppingStore');
