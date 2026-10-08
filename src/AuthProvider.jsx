@@ -2,6 +2,7 @@ import { useEffect, useReducer } from 'react';
 import { createSafeContext } from './context';
 import { storage } from './asyncStorage';
 import { onRestoreStateFromStorageAction } from './authMiddleware';
+import { AUTH_KEY } from './constants';
 
 const [AuthContext, useAuth] = createSafeContext();
 
@@ -48,8 +49,8 @@ export const AuthProvider = ({ children }) => {
   const [auth, dispatch] = useReducer(authReducer, INIT_AUTH_STATE);
 
   useEffect(() => {
-    storage.getItem('auth').then(authString => {
-      if (authString?.length > 0) {
+    storage.getItem(AUTH_KEY).then(authString => {
+      if (authString) {
         onRestoreStateFromStorageAction(dispatch, JSON.parse(authString));
       }
     });

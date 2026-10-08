@@ -1,14 +1,16 @@
 import { storage } from './asyncStorage';
+import { AUTH_KEY } from './constants';
 
 export const onLoginAction = dispatch => {
-  const onLoginCallback = auth => storage.setItem('auth', JSON.stringify(auth));
+  const onLoginCallback = auth =>
+    storage.setItem(AUTH_KEY, JSON.stringify(auth));
 
   dispatch({ type: 'login', userName: 'Prateek', onLoginCallback });
 };
 
 export const onLogoutAction = dispatch => {
   const onLogoutCallback = auth =>
-    storage.setItem('auth', JSON.stringify(auth));
+    storage.setItem(AUTH_KEY, JSON.stringify(auth));
 
   dispatch({ type: 'logout', onLogoutCallback });
 };

@@ -1,15 +1,16 @@
 import { storage } from './asyncStorage';
+import { SHOPPING_STORE_KEY } from './constants';
 
 export const onShoppingStoreIncrementAction = (dispatch, index) => {
   const onIncrementCallback = shoppingStore =>
-    storage.setItem('shoppingStore', JSON.stringify(shoppingStore));
+    storage.setItem(SHOPPING_STORE_KEY, JSON.stringify(shoppingStore));
 
   dispatch({ type: 'increment', index, onIncrementCallback });
 };
 
 export const onShoppingStoreDecrementAction = (dispatch, index) => {
   const onDecrementCallback = shoppingStore =>
-    storage.setItem('shoppingStore', JSON.stringify(shoppingStore));
+    storage.setItem(SHOPPING_STORE_KEY, JSON.stringify(shoppingStore));
 
   dispatch({ type: 'decrement', index, onDecrementCallback });
 };

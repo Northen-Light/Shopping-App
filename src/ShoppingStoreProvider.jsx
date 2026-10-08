@@ -2,6 +2,7 @@ import { useEffect, useReducer } from 'react';
 import { createSafeContext } from './context';
 import { onShoppingStoreRestoreAction } from './shoppingStoreMiddleware';
 import { storage } from './asyncStorage';
+import { SHOPPING_STORE_KEY } from './constants';
 
 const [ShoppingStoreContext, useShoppingStore] =
   createSafeContext('shoppingStore');
@@ -82,8 +83,8 @@ export const ShoppingStoreProvider = ({ children }) => {
   );
 
   useEffect(() => {
-    storage.getItem('shoppingStore').then(shoppingStoreString => {
-      if (shoppingStoreString?.length > 0) {
+    storage.getItem(SHOPPING_STORE_KEY).then(shoppingStoreString => {
+      if (shoppingStoreString) {
         onShoppingStoreRestoreAction(dispatch, JSON.parse(shoppingStoreString));
       }
     });
