@@ -1,11 +1,15 @@
-import { useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import { createSafeContext } from './context';
+import { storage } from './asyncStorage';
+import { onRestoreStateFromStorageAction } from './authMiddleware';
 
 const [AuthContext, useAuth] = createSafeContext();
 
 const INIT_AUTH_STATE = {
-  userName: '',
-  isLoggedIn: false,
+  user: {
+    userName: '',
+    isLoggedIn: false,
+  },
 };
 
 function authReducer(authState, action) {
@@ -13,26 +17,46 @@ function authReducer(authState, action) {
     case 'login': {
       const state = { ...authState };
 
-      state.userName = action.userName;
-      state.isLoggedIn = true;
+      state.user.userName = action.userName;
+      state.user.isLoggedIn = true;
+
+      action.onLoginCallback(state);
+
       return state;
     }
 
     case 'logout': {
       const state = { ...authState };
 
-      state.userName = '';
-      state.isLoggedIn = false;
+      state.user.userName = '';
+      state.user.isLoggedIn = false;
+
+      action.onLogoutCallback(state);
+
+      return state;
+    }
+
+    case 'restore': {
+      let state = { ...action.auth };
+
       return state;
     }
   }
 }
 
 export const AuthProvider = ({ children }) => {
-  const [user, dispatch] = useReducer(authReducer, INIT_AUTH_STATE);
+  const [auth, dispatch] = useReducer(authReducer, INIT_AUTH_STATE);
+
+  useEffect(() => {
+    storage.getItem('auth').then(authString => {
+      if (authString?.length > 0) {
+        onRestoreStateFromStorageAction(dispatch, JSON.parse(authString));
+      }
+    });
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ user, dispatch }}>
+    <AuthContext.Provider value={{ auth, dispatch }}>
       {children}
     </AuthContext.Provider>
   );

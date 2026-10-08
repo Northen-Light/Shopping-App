@@ -1,15 +1,16 @@
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from './AuthProvider';
-import { loginAction, logoutAction } from './authMiddleware';
+import { onLoginAction, onLogoutAction } from './authMiddleware';
 import { onShoppingStoreResetAction } from './shoppingStoreMiddleware';
 import { useShoppingStore } from './ShoppingStoreProvider';
 
 export default function LandingPage() {
   const navigation = useNavigation();
-  const { user, dispatch: authDispatch } = useAuth();
+  const { auth, dispatch: authDispatch } = useAuth();
   const { shoppingStore, dispatch: shoppingStoreDispatch } = useShoppingStore();
 
+  const user = auth.user;
   const cartQuantity = shoppingStore.cart.quantity;
 
   return (
@@ -17,7 +18,7 @@ export default function LandingPage() {
       {user?.isLoggedIn ? (
         <Text style={styles.headerText}>Hi {user.userName}</Text>
       ) : (
-        <Button title="Login" onPress={() => loginAction(authDispatch)} />
+        <Button title="Login" onPress={() => onLoginAction(authDispatch)} />
       )}
       <View style={styles.divider} />
       <Text style={styles.headerText}>Welcome to Shopping App</Text>
@@ -40,7 +41,7 @@ export default function LandingPage() {
         <Button
           title="Logout"
           onPress={() => {
-            logoutAction(authDispatch);
+            onLogoutAction(authDispatch);
             onShoppingStoreResetAction(shoppingStoreDispatch);
           }}
         />

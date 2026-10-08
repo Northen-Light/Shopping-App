@@ -1,11 +1,25 @@
+import { storage } from './asyncStorage';
+
 export const onShoppingStoreIncrementAction = (dispatch, index) => {
-  dispatch({ type: 'increment', index });
+  const onIncrementCallback = shoppingStore =>
+    storage.setItem('shoppingStore', JSON.stringify(shoppingStore));
+
+  dispatch({ type: 'increment', index, onIncrementCallback });
 };
 
 export const onShoppingStoreDecrementAction = (dispatch, index) => {
-  dispatch({ type: 'decrement', index });
+  const onDecrementCallback = shoppingStore =>
+    storage.setItem('shoppingStore', JSON.stringify(shoppingStore));
+
+  dispatch({ type: 'decrement', index, onDecrementCallback });
 };
 
 export const onShoppingStoreResetAction = dispatch => {
-  dispatch({ type: 'reset' });
+  const onResetCallback = () => storage.removeItem('shoppingStore');
+
+  dispatch({ type: 'reset', onResetCallback });
+};
+
+export const onShoppingStoreRestoreAction = (dispatch, shoppingStore) => {
+  dispatch({ type: 'restore', shoppingStore });
 };

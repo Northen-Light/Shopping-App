@@ -1,6 +1,7 @@
 import { useEffect, useReducer } from 'react';
 import { createSafeContext } from './context';
-import { onShoppingStoreResetAction } from './shoppingStoreMiddleware';
+import { onShoppingStoreRestoreAction } from './shoppingStoreMiddleware';
+import { storage } from './asyncStorage';
 
 const [ShoppingStoreContext, useShoppingStore] =
   createSafeContext('shoppingStore');
@@ -15,9 +16,14 @@ const shoppingStoreReducer = (shoppingStore, action) => {
 
       state.cart.quantity++;
       state.cart.total += items[action.index].price;
-      if (!state.cart.indices.has(action.index)) {
-        state.cart.indices.add(action.index);
+
+      const indices = state.cart.indices;
+
+      if (indices.findIndex(index => index === action.index) === -1) {
+        indices.push(action.index);
       }
+
+      action.onIncrementCallback(state);
 
       return state;
     }
@@ -31,10 +37,18 @@ const shoppingStoreReducer = (shoppingStore, action) => {
 
         state.cart.quantity--;
         state.cart.total -= items[action.index].price;
+
+        const indices = state.cart.indices;
+
         if (items[action.index].quantity === 0) {
-          state.cart.indices.delete(action.index);
+          indices.splice(
+            indices.findIndex(index => index === action.index),
+            1,
+          );
         }
       }
+
+      action.onDecrementCallback(state);
 
       return state;
     }
@@ -47,8 +61,15 @@ const shoppingStoreReducer = (shoppingStore, action) => {
 
       state.cart.quantity = 0;
       state.cart.total = 0;
-      state.cart.indices = new Set();
+      state.cart.indices = [];
 
+      action.onResetCallback();
+
+      return state;
+    }
+
+    case 'restore': {
+      const state = { ...action.shoppingStore };
       return state;
     }
   }
@@ -61,7 +82,11 @@ export const ShoppingStoreProvider = ({ children }) => {
   );
 
   useEffect(() => {
-    onShoppingStoreResetAction(dispatch);
+    storage.getItem('shoppingStore').then(shoppingStoreString => {
+      if (shoppingStoreString?.length > 0) {
+        onShoppingStoreRestoreAction(dispatch, JSON.parse(shoppingStoreString));
+      }
+    });
   }, []);
 
   return (
@@ -281,6 +306,6 @@ const INIT_SHOPPING_STORE = {
   cart: {
     quantity: 0,
     total: 0,
-    indices: new Set(),
+    indices: [],
   },
 };

@@ -74,7 +74,7 @@ export default function Payment() {
         </View>
       </Modal>
       <ScrollView>
-        {Array.from(cartItemIndices).map(cartItemIndex => {
+        {cartItemIndices.map(cartItemIndex => {
           const cartItem = items[cartItemIndex];
 
           return (

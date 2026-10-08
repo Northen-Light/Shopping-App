@@ -9,7 +9,7 @@ import {
   Button,
 } from 'react-native';
 import { useAuth } from './AuthProvider';
-import { loginAction } from './authMiddleware';
+import { onLoginAction } from './authMiddleware';
 import {
   onShoppingStoreIncrementAction,
   onShoppingStoreDecrementAction,
@@ -17,7 +17,8 @@ import {
 import { useShoppingStore } from './ShoppingStoreProvider';
 
 const Item = memo(({ itemName, itemPrice, itemQuantity, index, dispatch }) => {
-  const { user } = useAuth();
+  const { auth } = useAuth();
+  const user = auth.user;
 
   return (
     <View style={styles.itemContainer}>
@@ -47,8 +48,10 @@ const Item = memo(({ itemName, itemPrice, itemQuantity, index, dispatch }) => {
 
 export default function ListingPage() {
   const navigation = useNavigation();
-  const { user, dispatch: authDispatch } = useAuth();
+  const { auth, dispatch: authDispatch } = useAuth();
   const { shoppingStore, dispatch: shoppingStoreDispatch } = useShoppingStore();
+
+  const user = auth.user;
   const items = shoppingStore.items;
   const cartQuantity = shoppingStore.cart.quantity;
   const cartTotal = shoppingStore.cart.total;
@@ -63,7 +66,7 @@ export default function ListingPage() {
     <View style={styles.listingPageContainer}>
       {!user.isLoggedIn && (
         <>
-          <Button title="Login" onPress={() => loginAction(authDispatch)} />
+          <Button title="Login" onPress={() => onLoginAction(authDispatch)} />
           <View style={styles.divider} />
         </>
       )}
