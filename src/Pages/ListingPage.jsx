@@ -111,6 +111,7 @@ export default function ListingPage() {
         )}
         keyExtractor={item => item.id}
         onEndReached={loadMoreData}
+        onEndReachedThreshold={0.5}
         showsVerticalScrollIndicator={false}
         ListFooterComponent={
           isLoading ? <ActivityIndicator size="large" color="#0000ff" /> : null
