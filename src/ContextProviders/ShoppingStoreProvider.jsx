@@ -2,7 +2,7 @@ import { useEffect, useReducer } from 'react';
 import { createSafeContext } from '../context';
 import { onShoppingStoreRestoreAction } from '../middlewares/shoppingStoreMiddleware';
 import { storage } from '../asyncStorage';
-import { SHOPPING_STORE_KEY } from '../constants';
+import { SHOPPING_STORE_KEY, TOTAL_ITEMS } from '../constants';
 
 const [ShoppingStoreContext, useShoppingStore] =
   createSafeContext('shoppingStore');
@@ -56,9 +56,11 @@ const shoppingStoreReducer = (shoppingStore, action) => {
 
     case 'reset': {
       const state = { ...shoppingStore };
-      const items = state.items;
 
-      items.forEach(item => (item.quantity = 0));
+      ITEMS.forEach(item => (item.quantity = 0));
+      state.items = ITEMS.slice(0, 15);
+
+      state.nextItemIndex = 15;
 
       state.cart.quantity = 0;
       state.cart.total = 0;
@@ -70,7 +72,23 @@ const shoppingStoreReducer = (shoppingStore, action) => {
     }
 
     case 'restore': {
-      const state = { ...action.shoppingStore };
+      return { ...action.shoppingStore };
+    }
+
+    case 'appendItems': {
+      const state = { ...shoppingStore };
+
+      state.items.push(
+        ...ITEMS.slice(
+          state.nextItemIndex,
+          Math.min(state.nextItemIndex + 15, TOTAL_ITEMS),
+        ),
+      );
+
+      state.nextItemIndex = Math.min(state.nextItemIndex + 15, TOTAL_ITEMS);
+
+      action.onAppendItemsCallback(state);
+
       return state;
     }
   }
@@ -99,7 +117,7 @@ export const ShoppingStoreProvider = ({ children }) => {
 
 export { useShoppingStore };
 
-const items = [
+const ITEMS = [
   { id: 1, name: 'Apple', quantity: 0, price: 180 },
   { id: 2, name: 'Banana', quantity: 0, price: 60 },
   { id: 3, name: 'Orange', quantity: 0, price: 100 },
@@ -303,7 +321,8 @@ const items = [
 ];
 
 const INIT_SHOPPING_STORE = {
-  items,
+  items: ITEMS.slice(0, 15),
+  nextItemIndex: 15,
   cart: {
     quantity: 0,
     total: 0,

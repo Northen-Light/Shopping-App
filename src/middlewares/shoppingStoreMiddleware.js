@@ -16,11 +16,18 @@ export const onShoppingStoreDecrementAction = (dispatch, index) => {
 };
 
 export const onShoppingStoreResetAction = dispatch => {
-  const onResetCallback = () => storage.removeItem('shoppingStore');
+  const onResetCallback = () => storage.removeItem(SHOPPING_STORE_KEY);
 
   dispatch({ type: 'reset', onResetCallback });
 };
 
 export const onShoppingStoreRestoreAction = (dispatch, shoppingStore) => {
   dispatch({ type: 'restore', shoppingStore });
+};
+
+export const onShoppingStoreAppendItemsAction = dispatch => {
+  const onAppendItemsCallback = shoppingStore =>
+    storage.setItem(SHOPPING_STORE_KEY, JSON.stringify(shoppingStore));
+
+  dispatch({ type: 'appendItems', onAppendItemsCallback });
 };

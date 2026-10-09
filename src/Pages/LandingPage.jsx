@@ -38,14 +38,24 @@ export default function LandingPage() {
       />
       <View style={styles.divider} />
       {user.isLoggedIn && (
-        <Button
-          title="Logout"
-          onPress={() => {
-            onLogoutAction(authDispatch);
-            onShoppingStoreResetAction(shoppingStoreDispatch);
-          }}
-        />
+        <>
+          <Button
+            title="Logout"
+            onPress={() => {
+              onLogoutAction(authDispatch);
+              onShoppingStoreResetAction(shoppingStoreDispatch);
+            }}
+          />
+          <View style={styles.divider} />
+        </>
       )}
+      <Button
+        title="Reset"
+        onPress={() => {
+          onLogoutAction(authDispatch);
+          onShoppingStoreResetAction(shoppingStoreDispatch);
+        }}
+      />
     </View>
   );
 }

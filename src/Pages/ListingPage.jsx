@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -7,14 +7,17 @@ import {
   FlatList,
   TouchableOpacity,
   Button,
+  ActivityIndicator,
 } from 'react-native';
 import { useAuth } from '../ContextProviders/AuthProvider';
 import { onLoginAction } from '../middlewares/authMiddleware';
 import {
   onShoppingStoreIncrementAction,
   onShoppingStoreDecrementAction,
+  onShoppingStoreAppendItemsAction,
 } from '../middlewares/shoppingStoreMiddleware';
 import { useShoppingStore } from '../ContextProviders/ShoppingStoreProvider';
+import { TOTAL_ITEMS } from '../constants';
 
 const Item = memo(({ itemName, itemPrice, itemQuantity, index, dispatch }) => {
   const { auth } = useAuth();
@@ -50,17 +53,31 @@ export default function ListingPage() {
   const navigation = useNavigation();
   const { auth, dispatch: authDispatch } = useAuth();
   const { shoppingStore, dispatch: shoppingStoreDispatch } = useShoppingStore();
+  const [isLoading, setLoading] = useState(false);
 
   const user = auth.user;
   const items = shoppingStore.items;
   const cartQuantity = shoppingStore.cart.quantity;
   const cartTotal = shoppingStore.cart.total;
 
+  const hasMore = items.length < TOTAL_ITEMS;
+
   useEffect(() => {
     navigation.setOptions({
       title: 'Items List',
     });
   }, [navigation]);
+
+  const loadMoreData = () => {
+    if (!hasMore || isLoading) return;
+
+    setLoading(true);
+
+    setTimeout(() => {
+      onShoppingStoreAppendItemsAction(shoppingStoreDispatch);
+      setLoading(false);
+    }, 2000);
+  };
 
   return (
     <View style={styles.listingPageContainer}>
@@ -93,7 +110,12 @@ export default function ListingPage() {
           />
         )}
         keyExtractor={item => item.id}
+        onEndReached={loadMoreData}
         showsVerticalScrollIndicator={false}
+        ListFooterComponent={
+          isLoading ? <ActivityIndicator size="large" color="#0000ff" /> : null
+        }
+        ListFooterComponentStyle={styles.listFooterContainer}
       />
     </View>
   );
@@ -146,5 +168,10 @@ const styles = StyleSheet.create({
   },
   divider: {
     margin: 8,
+  },
+  listFooterContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
   },
 });
