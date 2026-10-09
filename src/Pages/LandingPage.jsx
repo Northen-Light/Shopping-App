@@ -51,10 +51,7 @@ export default function LandingPage() {
       )}
       <Button
         title="Reset"
-        onPress={() => {
-          onLogoutAction(authDispatch);
-          onShoppingStoreResetAction(shoppingStoreDispatch);
-        }}
+        onPress={() => onShoppingStoreResetAction(shoppingStoreDispatch)}
       />
     </View>
   );
