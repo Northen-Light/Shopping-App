@@ -2,18 +2,16 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, View, TextInput, ScrollView, Text } from 'react-native';
 import { queryItemsBasedOnText } from '../utils/queryItemsBasedOnText';
 import { ITEMS } from '../ContextProviders/ShoppingStoreProvider';
-// import { useDebounce } from '../hooks/useDebounce';
-import { useThrottle } from '../hooks/useThrottle';
+import { useDebounce } from '../hooks/useDebounce';
 
 export default function ExplorePage() {
   const [text, setText] = useState('');
-  const throttledText = useThrottle(text);
+  const debouncedText = useDebounce(text);
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    console.log('fired...');
-    setItems(queryItemsBasedOnText(throttledText, ITEMS));
-  }, [throttledText]);
+    setItems(queryItemsBasedOnText(debouncedText, ITEMS));
+  }, [debouncedText]);
 
   return (
     <View style={styles.explorePageContainer}>
