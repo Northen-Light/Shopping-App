@@ -117,7 +117,7 @@ export const ShoppingStoreProvider = ({ children }) => {
 
 export { useShoppingStore };
 
-const ITEMS = [
+export const ITEMS = [
   { id: 1, name: 'Apple', quantity: 0, price: 180 },
   { id: 2, name: 'Banana', quantity: 0, price: 60 },
   { id: 3, name: 'Orange', quantity: 0, price: 100 },

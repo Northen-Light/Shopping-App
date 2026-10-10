@@ -11,6 +11,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LandingPage from './Pages/LandingPage';
 import ListingPage from './Pages/ListingPage';
 import PaymentPage from './Pages/PaymentPage';
+import ExplorePage from './Pages/ExplorePage';
 import { AuthProvider } from './ContextProviders/AuthProvider';
 import { ShoppingStoreProvider } from './ContextProviders/ShoppingStoreProvider';
 import { useEffect, useState } from 'react';
@@ -36,6 +37,7 @@ function RootStack() {
       <Stack.Screen name="Landing" component={LandingPage} />
       <Stack.Screen name="Listing" component={ListingPage} />
       <Stack.Screen name="Payment" component={PaymentPage} />
+      <Stack.Screen name="Explore" component={ExplorePage} />
     </Stack.Navigator>
   );
 }

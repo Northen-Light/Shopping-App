@@ -33,9 +33,11 @@ export default function LandingPage() {
       )}
       <View style={styles.divider} />
       <Button
-        title="Explore the store"
+        title="Go to store"
         onPress={() => navigation.navigate('Listing')}
       />
+      <View style={styles.divider} />
+      <Button title="Explore" onPress={() => navigation.navigate('Explore')} />
       <View style={styles.divider} />
       {user.isLoggedIn && (
         <>
